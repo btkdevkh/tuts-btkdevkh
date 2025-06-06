@@ -2,7 +2,7 @@
 
 // Variables primitives
 $firstname = "Bella"; // string
-$age = 9; // interger
+$age = 17; // interger
 $amount = 100.50; // float
 $sexe = false; // boolean
 
@@ -40,7 +40,28 @@ $result = $num1 === 7 && $num2 === "5"; // true et false = false
 $result = $num1 === 7 && $num2 === 5; // true et true = true
 $result = $num1 === "7" || $num2 === 5; // false ou true = true
 $result = $num1 === 7 || $num2 === 5; // true ou true = true
-var_dump($result);
+// var_dump($result);
+
+// Condition (if)
+// if($age === 9) {
+//   echo "Tu as " . $age . " ans"; 
+// } else if($age === 17) {
+//   echo "Tu n'est pas encore majeur"; 
+// } else {
+//   echo "Tu es mineur";
+// }
+
+// Condition (switch)
+// switch($age) {
+//   case 9: echo "Tu as " . $age . " ans";
+//     break;
+//   case 17: echo "Tu n'est pas encore majeur";
+//     break;
+//   default: echo "Tu es mineur";
+// }
+
+// Ternaire
+echo($age === 9 ? "Tu as " . $age . " ans" : $age === 17) ? "Tu n'est pas encore majeur" : "Tu es mineur";
 
 ?>
 
