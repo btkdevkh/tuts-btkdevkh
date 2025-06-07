@@ -64,36 +64,63 @@ $result = $num1 === 7 || $num2 === 5; // true ou true = true
 // echo($age === 9 ? "Tu as " . $age . " ans" : $age === 17) ? "Tu n'est pas encore majeur" : "Tu es mineur";
 
 // Boucle (for), quand on sait le nombre d'iteration
-for($i = 0; $i < 10; $i++) {
-  echo "Itération de boucle (for) i : " . $i . "</br>";
-}
+// for($i = 0; $i < 10; $i++) {
+//   echo "Itération de boucle (for) i : " . $i . "</br>";
+// }
 
-echo "<hr>";
+// echo "<hr>";
 
 // Boucle (while), quand on sait le nombre d'iteration
-$i = 0; 
-while($i < count($people)) {
-  echo "Itération de boucle (while) prénom : " . $people[$i] . "</br>";
-  $i++;
-}
+// $i = 0; 
+// while($i < count($people)) {
+//   echo "Itération de boucle (while) prénom : " . $people[$i] . "</br>";
+//   $i++;
+// }
 
-echo "<hr>";
+// echo "<hr>";
 
 // Boucle (do, while)
-$i = 0; 
-do {
-  echo "J'exécute cette ligne quand même malgré la condition n'est pas satisfaite.";
-  echo "</br>";
-  echo "Itération de boucle (while) prénom : " . $people[$i] . "</br>";
-  $i++;
-} while($i < count($people));
+// $i = 0; 
+// do {
+//   echo "J'exécute cette ligne quand même malgré la condition n'est pas satisfaite.";
+//   echo "</br>";
+//   echo "Itération de boucle (while) prénom : " . $people[$i] . "</br>";
+//   $i++;
+// } while($i < count($people));
 
-echo "<hr>";
+// echo "<hr>";
 
 // Boucle (foreach)
-foreach ($people as $person) {
-  echo "Itération de boucle (foreach) prénom : " . $person . "</br>";
+// foreach ($people as $person) {
+//   echo "Itération de boucle (foreach) prénom : " . $person . "</br>";
+// }
+
+// Fonction (Classique)
+function greet () {
+  return "Salut, je suis une fonction classique! </br>";
 }
+echo(greet());
+
+// Fonction (Anonyme)
+$anonymeFunc = function () {
+  return "Salut, je suis une fonction anonyme! </br>";
+};
+echo($anonymeFunc());
+
+// Fonction (Arrow)
+$multiply = fn() => "Salut, je suis une fonction flechée, je calcule la multiplication : " . 5 * 3;
+echo($multiply());
+
+echo "</br>";
+
+// $addition = fn($num1, $num2) => $num1 + $num2;
+// echo("Résultat de l'addition : " . $addition(100, 50));
+
+function addition ($num1, $num2 = 50) {
+  return $num1 + $num2;
+}
+echo("Résultat de l'addition : " . addition(100, 80));
+
 
 ?>
 
