@@ -61,7 +61,39 @@ $result = $num1 === 7 || $num2 === 5; // true ou true = true
 // }
 
 // Ternaire
-echo($age === 9 ? "Tu as " . $age . " ans" : $age === 17) ? "Tu n'est pas encore majeur" : "Tu es mineur";
+// echo($age === 9 ? "Tu as " . $age . " ans" : $age === 17) ? "Tu n'est pas encore majeur" : "Tu es mineur";
+
+// Boucle (for), quand on sait le nombre d'iteration
+for($i = 0; $i < 10; $i++) {
+  echo "Itération de boucle (for) i : " . $i . "</br>";
+}
+
+echo "<hr>";
+
+// Boucle (while), quand on sait le nombre d'iteration
+$i = 0; 
+while($i < count($people)) {
+  echo "Itération de boucle (while) prénom : " . $people[$i] . "</br>";
+  $i++;
+}
+
+echo "<hr>";
+
+// Boucle (do, while)
+$i = 0; 
+do {
+  echo "J'exécute cette ligne quand même malgré la condition n'est pas satisfaite.";
+  echo "</br>";
+  echo "Itération de boucle (while) prénom : " . $people[$i] . "</br>";
+  $i++;
+} while($i < count($people));
+
+echo "<hr>";
+
+// Boucle (foreach)
+foreach ($people as $person) {
+  echo "Itération de boucle (foreach) prénom : " . $person . "</br>";
+}
 
 ?>
 
@@ -74,7 +106,7 @@ echo($age === 9 ? "Tu as " . $age . " ans" : $age === 17) ? "Tu n'est pas encore
 </head>
 <body>
   <h1>Cours PHP</h1>
-  <hr>
+<hr>
 
 </body>
 </html>
