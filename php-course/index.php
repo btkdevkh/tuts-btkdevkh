@@ -96,31 +96,43 @@ $result = $num1 === 7 || $num2 === 5; // true ou true = true
 // }
 
 // Fonction (Classique)
-function greet () {
-  return "Salut, je suis une fonction classique! </br>";
-}
-echo(greet());
+// function greet () {
+//   return "Salut, je suis une fonction classique! </br>";
+// }
+// echo(greet());
 
 // Fonction (Anonyme)
-$anonymeFunc = function () {
-  return "Salut, je suis une fonction anonyme! </br>";
-};
-echo($anonymeFunc());
+// $anonymeFunc = function () {
+//   return "Salut, je suis une fonction anonyme! </br>";
+// };
+// echo($anonymeFunc());
 
 // Fonction (Arrow)
-$multiply = fn() => "Salut, je suis une fonction flechée, je calcule la multiplication : " . 5 * 3;
-echo($multiply());
+// $multiply = fn() => "Salut, je suis une fonction flechée, je calcule la multiplication : " . 5 * 3;
+// echo($multiply());
 
-echo "</br>";
+// echo "</br>";
 
 // $addition = fn($num1, $num2) => $num1 + $num2;
 // echo("Résultat de l'addition : " . $addition(100, 50));
 
-function addition ($num1, $num2 = 50) {
-  return $num1 + $num2;
-}
-echo("Résultat de l'addition : " . addition(100, 80));
+// function addition ($num1, $num2 = 50) {
+//   return $num1 + $num2;
+// }
+// echo("Résultat de l'addition : " . addition(100, 80));
 
+// Super Globals Variables
+
+if(isset($_POST["submit"])) {
+  if($_SERVER["REQUEST_METHOD"] === "POST" && (isset($_POST["email"]) || isset($_POST["password"]))) {
+    echo $_SERVER["REQUEST_METHOD"];
+    
+    echo $_POST["email"];
+    echo $_POST["password"];
+  } else {
+    echo "La methode n'est pas autorisée.";
+  }
+}
 
 ?>
 
@@ -133,7 +145,13 @@ echo("Résultat de l'addition : " . addition(100, 80));
 </head>
 <body>
   <h1>Cours PHP</h1>
-<hr>
+  <hr>
+
+  <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+    <input type="email" name="email" placeholder="Email"><br>
+    <input type="password" name="password" placeholder="Password"><br>
+    <input type="submit" value="Valider" name="submit">
+  </form>
 
 </body>
 </html>
