@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Variables primitives
 $firstname = "Bella"; // string
@@ -123,16 +124,35 @@ $result = $num1 === 7 || $num2 === 5; // true ou true = true
 
 // Super Globals Variables
 
-if(isset($_POST["submit"])) {
-  if($_SERVER["REQUEST_METHOD"] === "POST" && (isset($_POST["email"]) || isset($_POST["password"]))) {
-    echo $_SERVER["REQUEST_METHOD"];
+// if(isset($_POST["submit"])) {
+//   if($_SERVER["REQUEST_METHOD"] === "POST" && (isset($_POST["email"]) || isset($_POST["password"]))) {
+//     echo $_SERVER["REQUEST_METHOD"];
     
-    echo $_POST["email"];
-    echo $_POST["password"];
-  } else {
-    echo "La methode n'est pas autorisée.";
-  }
-}
+//     echo $_POST["email"];
+//     echo $_POST["password"];
+//   } else {
+//     echo "La methode n'est pas autorisée.";
+//   }
+// }
+
+// Session
+// $_SESSION['username'] = 'Jimmy';
+// $_SESSION['admin'] = true;
+
+// // $_SESSION = [];
+// session_unset();
+// session_destroy();
+
+// if(isset($_SESSION['admin']) && $_SESSION['admin'] === true) {
+//   // echo $_SESSION['admin'];
+//   echo 'Benvenue dans votre espace';
+// } else {
+//   echo 'Benvenue';
+// }
+
+// Cookie
+setcookie('user', "Bella", time() + 3600, "", "", true, true);
+echo $_COOKIE["user"];
 
 ?>
 
@@ -147,11 +167,11 @@ if(isset($_POST["submit"])) {
   <h1>Cours PHP</h1>
   <hr>
 
-  <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+  <!-- <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
     <input type="email" name="email" placeholder="Email"><br>
     <input type="password" name="password" placeholder="Password"><br>
     <input type="submit" value="Valider" name="submit">
-  </form>
+  </form> -->
 
 </body>
 </html>
