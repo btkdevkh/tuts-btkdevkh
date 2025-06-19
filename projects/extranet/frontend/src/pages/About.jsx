@@ -1,6 +1,6 @@
 import BackButton from "../components/BackButton";
 
-const About = () => {
+const AboutPage = () => {
   return (
     <>
       <h2>Page about</h2>
@@ -11,4 +11,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default AboutPage;

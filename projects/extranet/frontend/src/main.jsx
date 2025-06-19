@@ -3,11 +3,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 import App from "./App.jsx";
-import About from "./pages/About.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-import ForgetPassword from "./pages/ForgetPassword.jsx";
-import Signup from "./pages/Signup.jsx";
+import ForgetPasswordPage from "./pages/ForgetPassword.jsx";
+import SignupPage from "./pages/Signup.jsx";
+import AboutPage from "./pages/About.jsx";
+import LoginPage from "./pages/Login.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -15,12 +16,13 @@ createRoot(document.getElementById("root")).render(
       {/* Header */}
       <Navbar />
 
-      <main className="p-3">
+      <main className="max-w-[1280px] mx-auto p-3">
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/forgetPassword" element={<ForgetPassword />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
         </Routes>
       </main>
 

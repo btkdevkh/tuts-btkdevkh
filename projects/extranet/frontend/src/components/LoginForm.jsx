@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-const Login = () => {
+const LoginForm = () => {
   return (
     <>
       {/* Login form */}
@@ -10,20 +10,20 @@ const Login = () => {
           type="text"
           name="username"
           placeholder="Nom d'utilisateur"
-          className="w-full p-2 bg-white focus:outline-gray-200"
+          className="w-full p-2 bg-white focus:outline-gray-200 rounded-sm"
         />
 
         <input
           type="text"
           name="password"
           placeholder="Mot de passe"
-          className="w-full p-2 bg-white focus:outline-gray-200"
+          className="w-full p-2 bg-white focus:outline-gray-200 rounded-sm"
         />
 
         <div className="w-full flex flex-col gap-3">
           <button
             type="submit"
-            className="w-full p-2 bg-[#b23a48] text-white text-lg font-[500] cursor-pointer"
+            className="w-full p-2 bg-[#b23a48] text-white text-lg font-[500] cursor-pointer rounded-sm"
           >
             Se connecter
           </button>
@@ -43,4 +43,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginForm;

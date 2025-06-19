@@ -1,6 +1,6 @@
 import BackButton from "../components/BackButton";
 
-const ForgetPassword = () => {
+const ForgetPasswordPage = () => {
   return (
     <>
       <h2>Page forget password</h2>
@@ -11,4 +11,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgetPasswordPage;

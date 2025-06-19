@@ -1,14 +1,15 @@
-import BackButton from "../components/BackButton";
+import SignupForm from "../components/SignupForm";
 
-const Signup = () => {
+const SignupPage = () => {
   return (
     <>
-      <h2>Page signup</h2>
+      <br />
       <br />
 
-      <BackButton />
+      {/* Signup */}
+      <SignupForm />
     </>
   );
 };
 
-export default Signup;
+export default SignupPage;

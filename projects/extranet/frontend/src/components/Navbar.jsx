@@ -2,10 +2,10 @@ import Logo from "./Logo";
 
 const Navbar = () => {
   return (
-    <>
+    <nav>
       {/* Pricipal logo */}
-      <Logo />
-    </>
+      <Logo size={200} />
+    </nav>
   );
 };
 

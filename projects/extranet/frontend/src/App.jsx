@@ -1,16 +1,19 @@
+import { useNavigate } from "react-router";
 import "./App.css";
-import Login from "./components/Login";
+import { useEffect } from "react";
 
 function App() {
-  return (
-    <main>
-      <br />
-      <br />
+  const navigate = useNavigate();
 
-      {/* Connexion */}
-      <Login />
-    </main>
-  );
+  useEffect(() => {
+    const connectedUser = false;
+
+    if (!connectedUser) {
+      navigate("/login");
+    }
+  }, []);
+
+  return <main></main>;
 }
 
 export default App;
