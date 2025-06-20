@@ -5,7 +5,7 @@ const BackButton = () => {
 
   return (
     <button
-      className="bg-[#338344] px-10 py-3 rounded-sm font-[500] text-white cursor-pointer"
+      className="bg-[#338344] px-7 py-2 rounded-sm font-[500] text-white cursor-pointer"
       onClick={() => {
         navigate(-1);
       }}

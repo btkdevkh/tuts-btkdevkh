@@ -1,12 +1,13 @@
 import BackButton from "../components/BackButton";
+import ForgetPasswordForm from "../components/ForgetPasswordForm";
 
 const ForgetPasswordPage = () => {
   return (
     <>
-      <h2>Page forget password</h2>
+      <br />
       <br />
 
-      <BackButton />
+      <ForgetPasswordForm />
     </>
   );
 };

@@ -70,7 +70,7 @@ const SignupForm = () => {
 
           <div className="flex justify-between">
             <Link to={"/login"} className="text-blue-700 underline">
-              Déja membre ?
+              Déja membre?
             </Link>
           </div>
         </div>
