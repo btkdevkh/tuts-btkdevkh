@@ -9,6 +9,7 @@ import ForgetPasswordPage from "./pages/ForgetPassword.jsx";
 import SignupPage from "./pages/Signup.jsx";
 import AboutPage from "./pages/About.jsx";
 import LoginPage from "./pages/Login.jsx";
+import { ToastContainer, toast } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -28,6 +29,8 @@ createRoot(document.getElementById("root")).render(
 
       {/* Footer */}
       <Footer />
+
+      <ToastContainer />
     </BrowserRouter>
   </StrictMode>
 );

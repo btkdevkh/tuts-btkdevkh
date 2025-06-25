@@ -1,6 +1,4 @@
 const Logo = ({ size }) => {
-  console.log(size);
-
   return (
     <>
       <div className="bg-[#fcb9b2] flex flex-col items-center p-3">
