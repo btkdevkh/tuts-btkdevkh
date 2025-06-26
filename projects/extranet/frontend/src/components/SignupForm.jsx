@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { BASE_API_URL } from "../utils/config";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -54,9 +55,6 @@ const SignupForm = () => {
     };
 
     // Send http request to the server
-    const BASE_API_URL =
-      "http://localhost:3000/TUTS/tuts-btkdevkh/projects/extranet/backend/index.php";
-
     const response = await fetch(`${BASE_API_URL}?api=add_user`, {
       method: "POST",
       headers: {
@@ -68,6 +66,10 @@ const SignupForm = () => {
     const data = await response.json();
 
     if (data && data.message) {
+      if (data.message.includes("Duplicate")) {
+        return setError("Le nom d'utilisateur existe déja!");
+      }
+
       toast.success(data.message, {
         toastId: "create-user-success",
         position: "top-right",
