@@ -10,27 +10,30 @@ import SignupPage from "./pages/Signup.jsx";
 import AboutPage from "./pages/About.jsx";
 import LoginPage from "./pages/Login.jsx";
 import { ToastContainer } from "react-toastify";
+import AuthContextProvider from "./contexts/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      {/* Header */}
-      <Navbar />
+      <AuthContextProvider>
+        {/* Header */}
+        <Navbar />
 
-      <main className="max-w-[1280px] mx-auto p-3">
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
-        </Routes>
-      </main>
+        <main className="max-w-[1280px] mx-auto p-3">
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
+          </Routes>
+        </main>
 
-      {/* Footer */}
-      <Footer />
+        {/* Footer */}
+        <Footer />
 
-      <ToastContainer />
+        <ToastContainer />
+      </AuthContextProvider>
     </BrowserRouter>
   </StrictMode>
 );

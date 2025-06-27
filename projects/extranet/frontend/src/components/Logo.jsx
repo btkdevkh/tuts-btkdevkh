@@ -1,7 +1,7 @@
 const Logo = ({ size }) => {
   return (
     <>
-      <div className="bg-[#fcb9b2] flex flex-col items-center p-3">
+      <div className="">
         <img src="/logo.png" width={size} />
       </div>
     </>
@@ -9,3 +9,5 @@ const Logo = ({ size }) => {
 };
 
 export default Logo;
+
+// flex flex-col items-center
