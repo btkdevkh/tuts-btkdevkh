@@ -20,7 +20,7 @@ try {
     header("Access-Control-Allow-Origin: http://localhost:5173");
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    header("Access-Control-Allow-Headers: Content-Type, x-csrf-token");
     header("Content-Type: application/json");
 
     // Si la requête est de type OPTIONS (préflight), on répond directement
@@ -60,6 +60,8 @@ try {
             // Cookie mode "httponly" TRUE
             // Générer un token aléatoire
             $token = bin2hex(random_bytes(32)); // 64 char
+            $token_csrf = bin2hex(random_bytes(32)); // Cross-Site Request Forgery
+
             $expiry = time() + 86400; // 24h
             $createdAt = date('Y-m-d H:i:s');
             $expiryDate = date('Y-m-d H:i:s', $expiry);
@@ -69,9 +71,9 @@ try {
             deleteUserToken($pdo, (int) $id_user);
 
             // Add user token
-            addUserToken($pdo, $id_user, $token, $createdAt, $expiryDate);
+            addUserToken($pdo, $id_user, $token, $createdAt, $expiryDate, $token_csrf);
 
-            // Créer le cookie avec des options de sécurité
+            // Set token cookie httponly
             setcookie(
               'auth_token',         
               $token,              
@@ -85,7 +87,16 @@ try {
               ]
             );
 
-            echo json_encode(["message" => "Vous vous êtes bien connecté!"]);
+            // Set CSRF token cookie non httponly
+            setcookie('XSRF-TOKEN', $token_csrf, [
+              'path' => '/',
+               'domain' => '',
+              'secure' => false, // seulement via HTTPS
+              'httponly' => false, // lisible par JavaScript
+              'samesite' => 'Lax',
+            ]);
+
+            echo json_encode(["message" => "Token CSRF envoyé", "token_csrf" => $token_csrf]);
           break;
           default: throw new Exception("Route not found");
         }
@@ -102,19 +113,23 @@ try {
               exit;
             }
 
-            // Get token from cooke
+            // Get token from cooke httponly
             $tokenCookie = $_COOKIE['auth_token'];
+
+            // Get token from cooke non httponly
+            $tokenCSRF = $_SERVER["HTTP_X_CSRF_TOKEN"] ?? null;
+
             // Get auth token
             $user = getAuthToken($pdo, $tokenCookie);
 
-            // Si aucun utilisateur trouvé
-            if (!$user) {
+            // Check authentication with "token httponly" and "token CSRF"
+            if (!$user || ($user && $user->token_csrf !== $tokenCSRF)) {
               http_response_code(401);
               echo json_encode(['error' => 'Token invalide ou expiré']);
               exit;
             }
 
-            echo json_encode(["message" => "Bienvenue dans votre espace!", "user" => $user]);
+            echo json_encode(["success" => true, "message" => "Bienvenue dans votre espace!", "user" => $user]);
           break;
           case "signout_user":
              // Lire le token (cookie httponly)
@@ -140,8 +155,28 @@ try {
             // Delte user token
             deleteUserToken($pdo, (int) $user->id_user);
 
-            // Set cookie to 1h ago
-            setcookie("auth_token", "", time() - 3600);
+            // Set cookie to 1h ago & remove
+            setcookie(
+              'auth_token',         
+              "",              
+              [
+                'expires' => time() - 3600,
+                'path' => '/',
+                'domain' => '',
+                'secure' => false, 
+                'httponly' => true, 
+                'samesite' => 'Lax'  
+              ]
+            );
+
+            setcookie('XSRF-TOKEN', "", [
+              'path' => '/',
+              'expires' => time() - 3600,
+              'domain' => '',
+              'secure' => false, // seulement via HTTPS
+              'httponly' => false, // lisible par JavaScript
+              'samesite' => 'Lax',
+            ]);
 
             echo json_encode([ "success" => true, "message" => "Vous vous êtes bien déconnecté!"]);
           break;

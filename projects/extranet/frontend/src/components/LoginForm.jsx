@@ -37,7 +37,7 @@ const LoginForm = () => {
 
     const data = await response.json();
 
-    if (data && data.message) {
+    if (data && data.message && data.token_csrf) {
       if (data.message.includes("Identifiants")) {
         return setError(data.message);
       }

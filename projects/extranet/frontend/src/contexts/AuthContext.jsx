@@ -2,6 +2,7 @@ import { createContext, useEffect, useState, use } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { BASE_API_URL } from "../utils/config";
 import { toast } from "react-toastify";
+import getCookieNonHttponly from "../utils/getCookieNonHttponly";
 
 const initialStates = {
   auth: null,
@@ -22,6 +23,10 @@ const AuthContextProvider = ({ children }) => {
     fetch(`${BASE_API_URL}?api=get_current_user`, {
       method: "GET",
       credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": getCookieNonHttponly("XSRF-TOKEN"),
+      },
     })
       .then((res) => res.json())
       .then((data) => {
