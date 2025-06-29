@@ -5,6 +5,8 @@ const SignupPage = () => {
     <>
       <br />
       <br />
+      <br />
+      <br />
 
       {/* Signup */}
       <SignupForm />

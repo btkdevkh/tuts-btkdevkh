@@ -6,6 +6,8 @@ const ForgetPasswordPage = () => {
     <>
       <br />
       <br />
+      <br />
+      <br />
 
       <ForgetPasswordForm />
     </>

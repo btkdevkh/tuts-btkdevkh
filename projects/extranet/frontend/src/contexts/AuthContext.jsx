@@ -30,7 +30,7 @@ const AuthContextProvider = ({ children }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Utilisateur connecté :", data);
+        // console.log("Utilisateur connecté :", data);
 
         if (data && data.user) {
           setAuth(data.user);
@@ -58,6 +58,10 @@ const AuthContextProvider = ({ children }) => {
     const response = await fetch(`${BASE_API_URL}?api=signout_user`, {
       method: "GET",
       credentials: "include", // Httponly
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": getCookieNonHttponly("XSRF-TOKEN"),
+      },
     });
 
     const data = await response.json();

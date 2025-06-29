@@ -19,7 +19,7 @@ createRoot(document.getElementById("root")).render(
         {/* Header */}
         <Navbar />
 
-        <main className="max-w-[1280px] mx-auto p-3">
+        <main className="min-h-screen max-w-[1280px] mx-auto p-3">
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/login" element={<LoginPage />} />

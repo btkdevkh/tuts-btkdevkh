@@ -8,6 +8,8 @@ require_once 'functions/getUserByUsername.php';
 require_once 'functions/deleteUserToken.php';
 require_once 'functions/addUserToken.php';
 require_once 'functions/getAuthToken.php';
+require_once 'functions/getActeurs.php';
+require_once 'utils/checkAuth.php';
 
 $pdo = getPdo();
 // var_dump($pdo);
@@ -96,7 +98,7 @@ try {
               'samesite' => 'Lax',
             ]);
 
-            echo json_encode(["message" => "Token CSRF envoyé", "token_csrf" => $token_csrf]);
+            echo json_encode(["message" => "Bienvenue dans votre espace!", "token_csrf" => $token_csrf]);
           break;
           default: throw new Exception("Route not found");
         }
@@ -105,54 +107,34 @@ try {
       // Method GET
       case "GET":
         switch (htmlspecialchars($api)) {
+          case "get_acteurs":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            $acteurs = getActeurs($pdo);
+            echo json_encode(['acteurs' => $acteurs]);
+          break;
           case "get_current_user":
-            // Lire le token (cookie httponly)
-            if (!isset($_COOKIE['auth_token'])) {
-              http_response_code(401);
-              echo json_encode(['error' => 'Non authentifié']);
-              exit;
-            }
+            // Check authenticated user
+            checkAuth($pdo);
 
             // Get token from cooke httponly
             $tokenCookie = $_COOKIE['auth_token'];
-
-            // Get token from cooke non httponly
-            $tokenCSRF = $_SERVER["HTTP_X_CSRF_TOKEN"] ?? null;
-
             // Get auth token
             $user = getAuthToken($pdo, $tokenCookie);
-
-            // Check authentication with "token httponly" and "token CSRF"
-            if (!$user || ($user && $user->token_csrf !== $tokenCSRF)) {
-              http_response_code(401);
-              echo json_encode(['error' => 'Token invalide ou expiré']);
-              exit;
-            }
 
             echo json_encode(["success" => true, "message" => "Bienvenue dans votre espace!", "user" => $user]);
           break;
           case "signout_user":
-             // Lire le token (cookie httponly)
-            if (!isset($_COOKIE['auth_token'])) {
-              http_response_code(401);
-              echo json_encode(['error' => 'Non authentifié']);
-              exit;
-            }
+            // Check authenticated user
+            checkAuth($pdo);
 
-            // Get token from cooke
+            // Get token from cooke httponly
             $tokenCookie = $_COOKIE['auth_token'];
-
             // Get auth token
             $user = getAuthToken($pdo, $tokenCookie);
 
-             // Si aucun utilisateur trouvé
-            if (!$user) {
-              http_response_code(401);
-              echo json_encode(['error' => 'Token invalide ou expiré']);
-              exit;
-            }
-
-            // Delte user token
+            // Delete user token
             deleteUserToken($pdo, (int) $user->id_user);
 
             // Set cookie to 1h ago & remove
