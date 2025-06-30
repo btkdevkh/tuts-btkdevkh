@@ -11,6 +11,7 @@ import AboutPage from "./pages/About.jsx";
 import LoginPage from "./pages/Login.jsx";
 import { ToastContainer } from "react-toastify";
 import AuthContextProvider from "./contexts/AuthContext.jsx";
+import ActeurPage from "./pages/Acteur.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")).render(
         <main className="min-h-screen max-w-[1280px] mx-auto p-3">
           <Routes>
             <Route path="/" element={<App />} />
+            <Route path="/acteur/:id" element={<ActeurPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/signup" element={<SignupPage />} />

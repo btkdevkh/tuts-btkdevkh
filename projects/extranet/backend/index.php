@@ -9,21 +9,23 @@ require_once 'functions/deleteUserToken.php';
 require_once 'functions/addUserToken.php';
 require_once 'functions/getAuthToken.php';
 require_once 'functions/getActeurs.php';
+require_once 'functions/getActeurById.php';
+require_once 'utils/set_header.php';
 require_once 'utils/checkAuth.php';
+require_once 'utils/set_cookie.php';
+require_once 'utils/unset_cookie.php';
 
-$pdo = getPdo();
-// var_dump($pdo);
-
-$method = $_SERVER['REQUEST_METHOD'];
 $api = $_GET['api'] ?? null;
+$id = $_GET['id'] ?? null;
+$method = $_SERVER['REQUEST_METHOD'];
 
 try {
   if(!empty($api)) {
-    header("Access-Control-Allow-Origin: http://localhost:5173");
-    header("Access-Control-Allow-Credentials: true");
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, x-csrf-token");
-    header("Content-Type: application/json");
+    // Set header
+    set_header();
+
+    // PDO instace
+    $pdo = getPdo();
 
     // Si la requête est de type OPTIONS (préflight), on répond directement
     if ($method === 'OPTIONS') {
@@ -76,27 +78,10 @@ try {
             addUserToken($pdo, $id_user, $token, $createdAt, $expiryDate, $token_csrf);
 
             // Set token cookie httponly
-            setcookie(
-              'auth_token',         
-              $token,              
-              [
-                'expires' => $expiry,
-                'path' => '/',
-                'domain' => '',
-                'secure' => false, 
-                'httponly' => true, // Inaccessible en JavaScript
-                'samesite' => 'Lax'  // ou 'Strict' selon le besoin
-              ]
-            );
+            set_cookie("auth_token", $token, false, true, $expiry);
 
             // Set CSRF token cookie non httponly
-            setcookie('XSRF-TOKEN', $token_csrf, [
-              'path' => '/',
-               'domain' => '',
-              'secure' => false, // seulement via HTTPS
-              'httponly' => false, // lisible par JavaScript
-              'samesite' => 'Lax',
-            ]);
+            set_cookie('XSRF-TOKEN', $token_csrf, false, false);
 
             echo json_encode(["message" => "Bienvenue dans votre espace!", "token_csrf" => $token_csrf]);
           break;
@@ -107,6 +92,19 @@ try {
       // Method GET
       case "GET":
         switch (htmlspecialchars($api)) {
+          case "get_acteur":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            if(empty($id) || (!empty($id) && !is_numeric($id))) {
+              http_response_code(404);
+              echo json_encode(["message" => "Identifiant inconnue"]);
+              exit;
+            }
+
+            $acteur = getActeurById($pdo, $id);
+            echo json_encode(['acteur' => $acteur]);
+          break;
           case "get_acteurs":
             // Check authenticated user
             checkAuth($pdo);
@@ -138,27 +136,8 @@ try {
             deleteUserToken($pdo, (int) $user->id_user);
 
             // Set cookie to 1h ago & remove
-            setcookie(
-              'auth_token',         
-              "",              
-              [
-                'expires' => time() - 3600,
-                'path' => '/',
-                'domain' => '',
-                'secure' => false, 
-                'httponly' => true, 
-                'samesite' => 'Lax'  
-              ]
-            );
-
-            setcookie('XSRF-TOKEN', "", [
-              'path' => '/',
-              'expires' => time() - 3600,
-              'domain' => '',
-              'secure' => false, // seulement via HTTPS
-              'httponly' => false, // lisible par JavaScript
-              'samesite' => 'Lax',
-            ]);
+            unset_cookie('auth_token', false, true);
+            unset_cookie('XSRF-TOKEN', false, false);
 
             echo json_encode([ "success" => true, "message" => "Vous vous êtes bien déconnecté!"]);
           break;

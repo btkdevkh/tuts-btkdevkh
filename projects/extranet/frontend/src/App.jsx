@@ -40,29 +40,29 @@ const App = () => {
       <h2 className="font-bold text-xl">Acteurs et partenaires</h2>
 
       {/* Acteurs */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         {acteurs ? (
           acteurs.map((acteur) => {
             return (
               <div
-                className="bg-[#5aa16a] text-white p-5 rounded-xl flex gap-5 items-center"
+                className="bg-[#5aa16a] text-white p-3 rounded-xl flex gap-5 items-center"
                 key={acteur.id_acteur}
               >
-                <div className="w-95 h-30">
+                <div className="w-95 h-50">
                   <img
-                    className="w-full h-full rounded-xl"
+                    className="w-full h-full rounded-lg"
                     src={IMAGE_API_URL + acteur.logo}
                     alt={acteur.acteur}
                   />
                 </div>
 
-                <div className="flex flex-col gap-3 w-full">
+                <div className="flex flex-col gap-6 w-full">
                   <h3 className="font-bold">{acteur.acteur}</h3>
-                  <p>{acteur.description.slice(0, 100)}...</p>
+                  <p>{acteur.description.slice(0, 50)}...</p>
 
                   <Link
-                    className="bg-[#ad4d43] px-4 py-2 ml-auto rounded-md"
-                    to={`${BASE_API_URL}?api=acteur&id=${acteur.id_acteur}`}
+                    className="bg-[#ad4d43] px-2 py-1 ml-auto rounded-md"
+                    to={`/acteur/${acteur.id_acteur}`}
                   >
                     Lire la suite
                   </Link>
