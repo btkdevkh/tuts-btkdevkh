@@ -1,10 +1,10 @@
 import Spinner from "./components/Spinner";
-import useActeur from "./hooks/useActeur";
-import { BASE_API_URL, IMAGE_API_URL } from "./utils/config";
+import useGetActeurs from "./hooks/useGetActeurs";
+import { IMAGE_API_URL } from "./utils/config";
 import { Link } from "react-router";
 
 const App = () => {
-  const { loading, acteurs } = useActeur();
+  const { loading, acteurs } = useGetActeurs();
 
   return (
     <main className="p-3 flex flex-col gap-2">

@@ -10,6 +10,8 @@ require_once 'functions/addUserToken.php';
 require_once 'functions/getAuthToken.php';
 require_once 'functions/getActeurs.php';
 require_once 'functions/getActeurById.php';
+require_once 'functions/addPost.php';
+require_once 'functions/getPosts.php';
 require_once 'utils/set_header.php';
 require_once 'utils/checkAuth.php';
 require_once 'utils/set_cookie.php';
@@ -85,6 +87,26 @@ try {
 
             echo json_encode(["message" => "Bienvenue dans votre espace!", "token_csrf" => $token_csrf]);
           break;
+          case "add_comment":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            // Lire le corps brut de la requête
+            $rawInput = file_get_contents("php://input");
+
+            // Décoder le JSON en tableau associatif
+            $data = json_decode($rawInput, true); 
+            
+            $id_user = htmlspecialchars($data['id_user']);
+            $id_acteur = htmlspecialchars($data['id_acteur']);
+            $post = $data['post'];
+
+            // Add post
+            addPost($pdo, $id_user, $id_acteur, $post);
+
+            http_response_code(201);
+            echo json_encode(["message" => "Commentaire posté!"]);
+          break;
           default: throw new Exception("Route not found");
         }
         break;
@@ -92,6 +114,22 @@ try {
       // Method GET
       case "GET":
         switch (htmlspecialchars($api)) {
+          case "get_posts":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            if(empty($id) || (!empty($id) && !is_numeric($id))) {
+              http_response_code(404);
+              echo json_encode(["message" => "Identifiant inconnue"]);
+              exit;
+            }
+
+            // Get comments
+            $posts = getPosts($pdo, $id);
+
+            http_response_code(200);
+            echo json_encode(['posts' => $posts]);
+          break;
           case "get_acteur":
             // Check authenticated user
             checkAuth($pdo);
