@@ -1,0 +1,47 @@
+import { useEffect, useState } from "react";
+import getCookieNonHttponly from "../utils/getCookieNonHttponly";
+import { BASE_API_URL } from "../utils/config";
+
+const useGetVotes = (id_acteur, submit) => {
+  const [count, setCount] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const getVotes = async () => {
+    try {
+      const response = await fetch(
+        `${BASE_API_URL}?api=get_votes&id_acteur=${id_acteur}`,
+        {
+          method: "GET",
+          credentials: "include", // Httponly
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": getCookieNonHttponly("XSRF-TOKEN"),
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (data && data.count) {
+        return setCount(data.count);
+      }
+
+      setCount(null);
+    } catch (error) {
+      console.log("Error: ", error);
+      setCount(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!submit || submit) {
+      getVotes();
+    }
+  }, [submit]);
+
+  return { loading, count };
+};
+
+export default useGetVotes;

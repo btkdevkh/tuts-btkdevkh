@@ -12,6 +12,7 @@ import LoginPage from "./pages/Login.jsx";
 import { ToastContainer } from "react-toastify";
 import AuthContextProvider from "./contexts/AuthContext.jsx";
 import ActeurPage from "./pages/Acteur.jsx";
+import SettingPage from "./pages/Setting.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -28,6 +29,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/about" element={<AboutPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
+            <Route path="/userSettings" element={<SettingPage />} />
           </Routes>
         </main>
 

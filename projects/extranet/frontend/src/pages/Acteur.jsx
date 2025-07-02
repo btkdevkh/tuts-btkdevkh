@@ -8,6 +8,11 @@ import CommentForm from "../components/CommentForm";
 import { useState } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 import useGetPosts from "../hooks/useGetPosts";
+import LikeButton from "../components/LikeButton";
+import DisikeButton from "../components/DisikeButton";
+import CountLikeDislike from "../components/CountLikeDislike";
+import formatDateWithZeros from "../utils/formatDateWithZeros";
+import { MdAdd } from "react-icons/md";
 
 const ActeurPage = () => {
   const [submit, setSubmit] = useState(false);
@@ -17,8 +22,6 @@ const ActeurPage = () => {
   const { loading: loadingPost, posts } = useGetPosts(id_acteur, submit);
   const { loading, acteur } = useGetActeur(id_acteur);
   const [show, setShow] = useState(false);
-
-  console.log("posts :", posts);
 
   if (!acteur) {
     return (
@@ -32,8 +35,8 @@ const ActeurPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
-      <div className="p-1 md:w-[80%] mx-auto flex flex-col justify-between">
+    <div className="min-h-screen md:w-[80%] mx-auto flex flex-col justify-between mt-3 mb-3">
+      <div className="p-1 flex flex-col justify-between">
         <div className="flex flex-col justify-between gap-5">
           <div className="w-full h-50 mx-auto">
             <img
@@ -48,28 +51,51 @@ const ActeurPage = () => {
 
           {/* Commentaire */}
           <div>
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">
-                {posts && posts.length > 0
-                  ? posts.length + " Commentaire(s)"
-                  : ""}
-              </h2>
+            <div className="flex justify-between gap-2">
               <button
                 onClick={() => setShow(true)}
-                className="bg-[#000] font-semibold text-white py-2 px-2 rounded-md cursor-pointer"
+                className="border border-black font-semibold py-2 px-2 rounded-md cursor-pointer flex items-center"
               >
-                + Commentaire
+                <MdAdd size={20} />
+                <span>Commentaire</span>
               </button>
+
+              {/* Like & Dislike buttons */}
+              <div className="flex items-center gap-3 border py-2 px-2 rounded-md">
+                <CountLikeDislike
+                  id_acteur={id_acteur ?? null}
+                  submit={submit}
+                />
+                <LikeButton
+                  id_user={auth ? auth.id_user : null}
+                  id_acteur={id_acteur ?? null}
+                  setSubmit={setSubmit}
+                />
+                <DisikeButton
+                  id_user={auth ? auth.id_user : null}
+                  id_acteur={id_acteur ?? null}
+                  setSubmit={setSubmit}
+                />
+              </div>
             </div>
 
             <br />
             {/* Commentaires */}
             {loadingPost && <Spinner />}
 
+            <h2 className="text-xl font-semibold mb-5">
+              {posts && posts.length > 0
+                ? posts.length + " Commentaire(s)"
+                : ""}
+            </h2>
+
             <div className="flex flex-col gap-3 pb-7">
               {posts ? (
                 posts.map((post) => (
-                  <div className="bg-[#fff] p-3 rounded-md" key={post.id_post}>
+                  <div
+                    className="bg-[#f1f1f1] p-3 rounded-md"
+                    key={post.id_post}
+                  >
                     <p>{post.prenom}</p>
                     <p>{formatDateWithZeros(post.date_add)}</p>
                     <p>{post.post}</p>
@@ -83,6 +109,10 @@ const ActeurPage = () => {
         </div>
       </div>
 
+      <div>
+        <BackButton />
+      </div>
+
       {/* Modal */}
       {show && (
         <Modal setShow={setShow}>
@@ -94,25 +124,8 @@ const ActeurPage = () => {
           />
         </Modal>
       )}
-
-      <div>
-        <BackButton />
-      </div>
     </div>
   );
 };
 
 export default ActeurPage;
-
-const formatDateWithZeros = (dateString) => {
-  const date = new Date(dateString);
-
-  const day = String(date.getDate()).padStart(2, "0"); // 01-31
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // 01-12
-  const year = date.getFullYear(); // 2025
-
-  const hours = String(date.getHours()).padStart(2, "0"); // 00-23
-  const minutes = String(date.getMinutes()).padStart(2, "0"); // 00-59
-
-  return `${day}/${month}/${year} ${hours}:${minutes}`;
-};

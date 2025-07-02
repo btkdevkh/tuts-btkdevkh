@@ -37,7 +37,7 @@ const App = () => {
 
       <br />
 
-      <h2 className="font-bold text-xl">Acteurs et partenaires</h2>
+      <h2 className="font-bold text-xl mb-5">Acteurs et partenaires</h2>
 
       {/* Acteurs */}
       <div className="flex flex-col gap-2">
@@ -61,7 +61,7 @@ const App = () => {
                   <p>{acteur.description.slice(0, 50)}...</p>
 
                   <Link
-                    className="bg-[#ad4d43] px-2 py-1 ml-auto rounded-md"
+                    className="bg-[#000] px-2 py-1 ml-auto rounded-md"
                     to={`/acteur/${acteur.id_acteur}`}
                   >
                     Lire la suite

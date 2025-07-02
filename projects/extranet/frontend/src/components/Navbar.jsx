@@ -2,6 +2,8 @@ import Logo from "./Logo";
 import { LiaSignOutAltSolid } from "react-icons/lia";
 import { useAuthContext } from "../contexts/AuthContext";
 import { RiAccountCircle2Fill } from "react-icons/ri";
+import { IoMdSettings } from "react-icons/io";
+import { Link } from "react-router";
 
 const Navbar = () => {
   const { auth, handleSignout } = useAuthContext();
@@ -29,6 +31,9 @@ const Navbar = () => {
             </button>
 
             <div className="flex justify-center gap-1 items-center">
+              <Link to="/userSettings">
+                <IoMdSettings size={30} title="Modifier mes informations" />
+              </Link>
               <RiAccountCircle2Fill size={30} />
               <span>
                 <b>

@@ -12,14 +12,20 @@ require_once 'functions/getActeurs.php';
 require_once 'functions/getActeurById.php';
 require_once 'functions/addPost.php';
 require_once 'functions/getPosts.php';
+require_once 'functions/addVote.php';
+require_once 'functions/deleteVote.php';
+require_once 'functions/getVotesByIdActeur.php';
+require_once 'functions/getVotesByIdUserAndIdActeur.php';
 require_once 'utils/set_header.php';
 require_once 'utils/checkAuth.php';
 require_once 'utils/set_cookie.php';
 require_once 'utils/unset_cookie.php';
 
 $api = $_GET['api'] ?? null;
-$id = $_GET['id'] ?? null;
 $method = $_SERVER['REQUEST_METHOD'];
+
+$id = $_GET['id'] ?? null;
+$id_acteur = $_GET['id_acteur'] ?? null;
 
 try {
   if(!empty($api)) {
@@ -37,8 +43,68 @@ try {
 
     switch ($method) {
       // Method POST
+      case "DELETE":
+        switch (htmlspecialchars($api)) {
+          case "dislike":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            // Lire le corps brut de la requête
+            $rawInput = file_get_contents("php://input");
+
+            // Décoder le JSON en tableau associatif
+            $data = json_decode($rawInput, true); 
+            $id_user = $data["id_user"];
+            $id_acteur = $data["id_acteur"];
+
+            // Get votes by id user & id acteur
+            $myVotes = getVotesByIdUserAndIdActeur($pdo, $id_user, $id_acteur);
+
+            if($myVotes === 0) {
+              // Vote dislike
+              addVote($pdo, $id_user, $id_acteur);
+
+              http_response_code(200);
+              echo json_encode(["success" => true]);
+            } else {
+              // Add like
+              deleteVote($pdo, $id_user, $id_acteur);
+
+              http_response_code(200);
+              echo json_encode(["success" => true]);
+            }            
+          break;
+          default: throw new Exception("Route not found");
+        }
+      break;
       case "POST":
         switch (htmlspecialchars($api)) {
+          case "like":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            // Lire le corps brut de la requête
+            $rawInput = file_get_contents("php://input");
+
+            // Décoder le JSON en tableau associatif
+            $data = json_decode($rawInput, true); 
+            $id_user = $data["id_user"];
+            $id_acteur = $data["id_acteur"];
+
+            $myVotes = getVotesByIdUserAndIdActeur($pdo, $id_user, $id_acteur);
+            
+            if($myVotes > 0) {
+              http_response_code(401);
+              echo json_encode(["success" => false]);
+              exit;
+            };
+
+            // Vote like
+            addVote($pdo, $id_user, $id_acteur);
+
+            http_response_code(201);
+            echo json_encode(["success" => true]);
+          break;
           case "add_user":
             // Lire le corps brut de la requête
             $rawInput = file_get_contents("php://input");
@@ -48,6 +114,8 @@ try {
 
             // Add new account
             addUser($pdo, $data);
+
+            http_response_code(201);
             echo json_encode(["message" => "Votre comptre a bien été crée."]);
           break;
           case "login_user":
@@ -59,6 +127,7 @@ try {
 
             // Check user exist & verify password
             if(!$user || ($user && !password_verify($data->password, $user->password))) {
+              http_response_code(404);
               echo json_encode(["message" => "Identifiants inconnus"]);
               exit();
             }
@@ -85,6 +154,7 @@ try {
             // Set CSRF token cookie non httponly
             set_cookie('XSRF-TOKEN', $token_csrf, false, false);
 
+            http_response_code(201);
             echo json_encode(["message" => "Bienvenue dans votre espace!", "token_csrf" => $token_csrf]);
           break;
           case "add_comment":
@@ -109,11 +179,30 @@ try {
           break;
           default: throw new Exception("Route not found");
         }
-        break;
+      break;
 
       // Method GET
       case "GET":
         switch (htmlspecialchars($api)) {
+          case "get_votes":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            if(
+              empty($id_acteur) || 
+              (!empty($id_acteur) && !is_numeric($id_acteur))
+              ) {
+              http_response_code(404);
+              echo json_encode(["message" => "Identifiant acteur inconnu"]);
+              exit;
+            }
+
+            // Get votes by id acteur
+            $votes = getVotesByIdActeur($pdo, $id_acteur);
+
+            http_response_code(200);
+            echo json_encode(["success" => true, "count" => $votes]);
+          break;
           case "get_posts":
             // Check authenticated user
             checkAuth($pdo);
@@ -141,6 +230,8 @@ try {
             }
 
             $acteur = getActeurById($pdo, $id);
+
+            http_response_code(200);
             echo json_encode(['acteur' => $acteur]);
           break;
           case "get_acteurs":
@@ -148,6 +239,8 @@ try {
             checkAuth($pdo);
 
             $acteurs = getActeurs($pdo);
+
+            http_response_code(200);
             echo json_encode(['acteurs' => $acteurs]);
           break;
           case "get_current_user":
@@ -159,6 +252,7 @@ try {
             // Get auth token
             $user = getAuthToken($pdo, $tokenCookie);
 
+            http_response_code(200);
             echo json_encode(["success" => true, "message" => "Bienvenue dans votre espace!", "user" => $user]);
           break;
           case "signout_user":
@@ -177,11 +271,12 @@ try {
             unset_cookie('auth_token', false, true);
             unset_cookie('XSRF-TOKEN', false, false);
 
+            http_response_code(200);
             echo json_encode([ "success" => true, "message" => "Vous vous êtes bien déconnecté!"]);
           break;
           default: throw new Exception("Route not found");
         }
-        break;
+      break;
       default: throw new Exception("Method not allowed");
     }
   } else {
