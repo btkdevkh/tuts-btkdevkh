@@ -13,9 +13,11 @@ require_once 'functions/getActeurById.php';
 require_once 'functions/addPost.php';
 require_once 'functions/getPosts.php';
 require_once 'functions/addVote.php';
+require_once 'functions/updateVote.php';
 require_once 'functions/deleteVote.php';
-require_once 'functions/getVotesByIdActeur.php';
-require_once 'functions/getVotesByIdUserAndIdActeur.php';
+require_once 'functions/getLikesByIdActeur.php';
+require_once 'functions/getDislikesByIdActeur.php';
+require_once 'functions/getVoteByIdUserAndIdActeur.php';
 require_once 'utils/set_header.php';
 require_once 'utils/checkAuth.php';
 require_once 'utils/set_cookie.php';
@@ -43,7 +45,7 @@ try {
 
     switch ($method) {
       // Method POST
-      case "DELETE":
+      case "POST":
         switch (htmlspecialchars($api)) {
           case "dislike":
             // Check authenticated user
@@ -58,27 +60,29 @@ try {
             $id_acteur = $data["id_acteur"];
 
             // Get votes by id user & id acteur
-            $myVotes = getVotesByIdUserAndIdActeur($pdo, $id_user, $id_acteur);
+            $myVote = getVoteByIdUserAndIdActeur($pdo, $id_user, $id_acteur);
 
-            if($myVotes === 0) {
-              // Vote dislike
-              addVote($pdo, $id_user, $id_acteur);
+            if($myVote && $myVote->vote === -1) {
+              http_response_code(401);
+              echo json_encode(["success" => false]);
+              exit;
+            }
 
+            if($myVote && $myVote->vote === 1) {
+              // Update like
+              updateVote($pdo, $id_user, $id_acteur, -1);
+  
               http_response_code(200);
               echo json_encode(["success" => true]);
-            } else {
-              // Add like
-              deleteVote($pdo, $id_user, $id_acteur);
+              exit;
+            } 
 
-              http_response_code(200);
-              echo json_encode(["success" => true]);
-            }            
+            // Add dislike
+            addVote($pdo, $id_user, $id_acteur, -1);
+
+            http_response_code(201);
+            echo json_encode(["success" => true]);
           break;
-          default: throw new Exception("Route not found");
-        }
-      break;
-      case "POST":
-        switch (htmlspecialchars($api)) {
           case "like":
             // Check authenticated user
             checkAuth($pdo);
@@ -91,16 +95,25 @@ try {
             $id_user = $data["id_user"];
             $id_acteur = $data["id_acteur"];
 
-            $myVotes = getVotesByIdUserAndIdActeur($pdo, $id_user, $id_acteur);
-            
-            if($myVotes > 0) {
+            $myVote = getVoteByIdUserAndIdActeur($pdo, $id_user, $id_acteur);
+
+            if($myVote && $myVote->vote === 1) {
               http_response_code(401);
               echo json_encode(["success" => false]);
               exit;
-            };
+            }
 
-            // Vote like
-            addVote($pdo, $id_user, $id_acteur);
+            if($myVote && $myVote->vote === -1) {
+              // Update dislike
+              updateVote($pdo, $id_user, $id_acteur, 1);
+              
+              http_response_code(200);
+              echo json_encode(["success" => true]);
+              exit;
+            } 
+            
+            // Add like
+            addVote($pdo, $id_user, $id_acteur, 1);
 
             http_response_code(201);
             echo json_encode(["success" => true]);
@@ -184,7 +197,7 @@ try {
       // Method GET
       case "GET":
         switch (htmlspecialchars($api)) {
-          case "get_votes":
+          case "get_dislikes":
             // Check authenticated user
             checkAuth($pdo);
 
@@ -198,10 +211,29 @@ try {
             }
 
             // Get votes by id acteur
-            $votes = getVotesByIdActeur($pdo, $id_acteur);
+            $dislikes = getDislikesByIdActeur($pdo, $id_acteur);
 
             http_response_code(200);
-            echo json_encode(["success" => true, "count" => $votes]);
+            echo json_encode(["success" => true, "count" => $dislikes]);
+          break;
+          case "get_likes":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            if(
+              empty($id_acteur) || 
+              (!empty($id_acteur) && !is_numeric($id_acteur))
+              ) {
+              http_response_code(404);
+              echo json_encode(["message" => "Identifiant acteur inconnu"]);
+              exit;
+            }
+
+            // Get votes by id acteur
+            $likes = getLikesByIdActeur($pdo, $id_acteur);
+
+            http_response_code(200);
+            echo json_encode(["success" => true, "count" => $likes]);
           break;
           case "get_posts":
             // Check authenticated user

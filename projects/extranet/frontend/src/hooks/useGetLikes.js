@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import getCookieNonHttponly from "../utils/getCookieNonHttponly";
 import { BASE_API_URL } from "../utils/config";
 
-const useGetVotes = (id_acteur, submit) => {
+const useGetLikes = (id_acteur, submit) => {
   const [count, setCount] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const getVotes = async () => {
+  const getLikes = async () => {
     try {
       const response = await fetch(
-        `${BASE_API_URL}?api=get_votes&id_acteur=${id_acteur}`,
+        `${BASE_API_URL}?api=get_likes&id_acteur=${id_acteur}`,
         {
           method: "GET",
           credentials: "include", // Httponly
@@ -22,7 +22,7 @@ const useGetVotes = (id_acteur, submit) => {
 
       const data = await response.json();
 
-      if (data && data.count) {
+      if (data && data.count > 0) {
         return setCount(data.count);
       }
 
@@ -37,11 +37,11 @@ const useGetVotes = (id_acteur, submit) => {
 
   useEffect(() => {
     if (!submit || submit) {
-      getVotes();
+      getLikes();
     }
   }, [submit]);
 
   return { loading, count };
 };
 
-export default useGetVotes;
+export default useGetLikes;

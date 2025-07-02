@@ -8,7 +8,7 @@ const DisikeButton = ({ id_user, id_acteur, setSubmit }) => {
 
     try {
       const response = await fetch(`${BASE_API_URL}?api=dislike`, {
-        method: "DELETE",
+        method: "POST",
         credentials: "include", // Httponly
         headers: {
           "Content-Type": "application/json",

@@ -10,9 +10,10 @@ import { useAuthContext } from "../contexts/AuthContext";
 import useGetPosts from "../hooks/useGetPosts";
 import LikeButton from "../components/LikeButton";
 import DisikeButton from "../components/DisikeButton";
-import CountLikeDislike from "../components/CountLikeDislike";
+import CountLike from "../components/CountLike";
 import formatDateWithZeros from "../utils/formatDateWithZeros";
 import { MdAdd } from "react-icons/md";
+import CountDislike from "../components/CountDislike";
 
 const ActeurPage = () => {
   const [submit, setSubmit] = useState(false);
@@ -61,21 +62,24 @@ const ActeurPage = () => {
               </button>
 
               {/* Like & Dislike buttons */}
-              <div className="flex items-center gap-3 border py-2 px-2 rounded-md">
-                <CountLikeDislike
-                  id_acteur={id_acteur ?? null}
-                  submit={submit}
-                />
-                <LikeButton
-                  id_user={auth ? auth.id_user : null}
-                  id_acteur={id_acteur ?? null}
-                  setSubmit={setSubmit}
-                />
-                <DisikeButton
-                  id_user={auth ? auth.id_user : null}
-                  id_acteur={id_acteur ?? null}
-                  setSubmit={setSubmit}
-                />
+              <div className="flex items-center gap-8 border py-2 px-2 rounded-md">
+                <div className="flex gap-3 items-center">
+                  <CountLike id_acteur={id_acteur ?? null} submit={submit} />
+                  <LikeButton
+                    id_user={auth ? auth.id_user : null}
+                    id_acteur={id_acteur ?? null}
+                    setSubmit={setSubmit}
+                  />
+                </div>
+
+                <div className="flex gap-3 items-center">
+                  <DisikeButton
+                    id_user={auth ? auth.id_user : null}
+                    id_acteur={id_acteur ?? null}
+                    setSubmit={setSubmit}
+                  />
+                  <CountDislike id_acteur={id_acteur ?? null} submit={submit} />
+                </div>
               </div>
             </div>
 
