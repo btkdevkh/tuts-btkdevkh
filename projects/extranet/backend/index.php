@@ -4,6 +4,8 @@
 
 require_once 'database/db.php';
 require_once 'functions/addUser.php';
+require_once 'functions/updateUserInfo.php';
+require_once 'functions/updateUserPassword.php';
 require_once 'functions/getUserByUsername.php';
 require_once 'functions/deleteUserToken.php';
 require_once 'functions/addUserToken.php';
@@ -45,8 +47,110 @@ try {
 
     switch ($method) {
       // Method POST
+      case 'PUT':
+        switch (htmlspecialchars($api)) {
+          case "reset_user_password":
+            // Check authenticated user
+            checkAuth($pdo);
+
+            // Lire le corps brut de la requête
+            $rawInput = file_get_contents("php://input");
+
+            // Décoder le JSON en tableau associatif
+            $data = json_decode($rawInput, true); 
+
+            $id_user = $data["id_user"];
+            $newPassword = $data["newPassword"];
+
+            // Reset new user password
+            $response = updateUserPassword($pdo, (int) $id_user, $newPassword);
+
+            if(!$response) {
+              http_response_code(404);
+              echo json_encode(["success" => false, "message" => "Une erreur s'est produit lors de la réinitalisation du mot de passe"]);
+              exit;
+            }
+
+            http_response_code(200);
+            echo json_encode(["success" => true, "message" => "Votre mot de pass a bien été réinitialisé"]);
+            break;
+          case 'update_user':
+            // Check authenticated user
+            checkAuth($pdo);
+
+            // Lire le corps brut de la requête
+            $rawInput = file_get_contents("php://input");
+
+            // Décoder le JSON en tableau associatif
+            $data = json_decode($rawInput, true); 
+
+            $id_user = $data["id_user"];
+            $username = $data["username"];
+            $newPassword = $data["newPassword"];
+            $question = $data["question"];
+            $reponse = $data["reponse"];
+
+            // Save new update info from user
+            $response = updateUserInfo($pdo, $id_user, $username, $question, $reponse, $newPassword);
+
+            if(!$response) {
+              http_response_code(404);
+              echo json_encode(["success" => false, "message" => "Une erreur s'est produit lors de modification"]);
+              exit;
+            }
+
+            http_response_code(200);
+            echo json_encode(["success" => true, "message" => "Votre informations ont bien été modifiés"]);
+            break;
+          default: throw new Exception("Route not found");
+        }
+        break;
       case "POST":
         switch (htmlspecialchars($api)) {
+          case "forget_user_password":
+            // Lire le corps brut de la requête
+            $rawInput = file_get_contents("php://input");
+
+            // Décoder le JSON en tableau associatif
+            $data = json_decode($rawInput, true); 
+
+            $username = $data["username"];
+            $reponse = $data["reponse"];
+
+            // Get user by username
+            $user = getUserByUsername($pdo, $username);
+
+            if(!$user || ($user && $user->reponse !== $reponse)) {
+              http_response_code(404);
+              echo json_encode(["success" => false, "message" => "Identifiants inconnus"]);
+              exit;
+            }
+
+            // Cookie mode "httponly" TRUE
+            // Générer un token aléatoire
+            $token = bin2hex(random_bytes(32)); // 64 char
+            $token_csrf = bin2hex(random_bytes(32)); // Cross-Site Request Forgery
+
+            $expiry = time() + 86400; // 24h
+            $createdAt = date('Y-m-d H:i:s');
+            $expiryDate = date('Y-m-d H:i:s', $expiry);
+            $id_user = $user->id_user; // ID user
+
+            // Delete user token
+            deleteUserToken($pdo, (int) $id_user);
+
+            // Add user token
+            addUserToken($pdo, $id_user, $token, $createdAt, $expiryDate, $token_csrf);
+
+            // Set token cookie httponly
+            set_cookie("auth_token", $token, false, true, $expiry);
+
+            // Set CSRF token cookie non httponly
+            set_cookie('XSRF-TOKEN', $token_csrf, false, false);
+
+            http_response_code(200);
+            echo json_encode(["success" => true, "id_user" => $user->id_user, "token_csrf" => $token_csrf]);
+            break;
           case "dislike":
             // Check authenticated user
             checkAuth($pdo);
@@ -56,6 +160,7 @@ try {
 
             // Décoder le JSON en tableau associatif
             $data = json_decode($rawInput, true); 
+
             $id_user = $data["id_user"];
             $id_acteur = $data["id_acteur"];
 
@@ -82,7 +187,7 @@ try {
 
             http_response_code(201);
             echo json_encode(["success" => true]);
-          break;
+            break;
           case "like":
             // Check authenticated user
             checkAuth($pdo);
@@ -117,7 +222,7 @@ try {
 
             http_response_code(201);
             echo json_encode(["success" => true]);
-          break;
+            break;
           case "add_user":
             // Lire le corps brut de la requête
             $rawInput = file_get_contents("php://input");
@@ -130,7 +235,7 @@ try {
 
             http_response_code(201);
             echo json_encode(["message" => "Votre comptre a bien été crée."]);
-          break;
+            break;
           case "login_user":
             // Recupérer et convitir les donées en object PHP
             $data = (object) $_POST;
@@ -155,7 +260,7 @@ try {
             $expiryDate = date('Y-m-d H:i:s', $expiry);
             $id_user = $user->id_user; // ID user
    
-            // Delte user token
+            // Delete user token
             deleteUserToken($pdo, (int) $id_user);
 
             // Add user token
@@ -169,7 +274,7 @@ try {
 
             http_response_code(201);
             echo json_encode(["message" => "Bienvenue dans votre espace!", "token_csrf" => $token_csrf]);
-          break;
+            break;
           case "add_comment":
             // Check authenticated user
             checkAuth($pdo);
@@ -192,7 +297,7 @@ try {
           break;
           default: throw new Exception("Route not found");
         }
-      break;
+        break;
 
       // Method GET
       case "GET":
@@ -215,7 +320,7 @@ try {
 
             http_response_code(200);
             echo json_encode(["success" => true, "count" => $dislikes]);
-          break;
+            break;
           case "get_likes":
             // Check authenticated user
             checkAuth($pdo);
@@ -234,7 +339,7 @@ try {
 
             http_response_code(200);
             echo json_encode(["success" => true, "count" => $likes]);
-          break;
+            break;
           case "get_posts":
             // Check authenticated user
             checkAuth($pdo);
@@ -250,7 +355,7 @@ try {
 
             http_response_code(200);
             echo json_encode(['posts' => $posts]);
-          break;
+            break;
           case "get_acteur":
             // Check authenticated user
             checkAuth($pdo);
@@ -265,7 +370,7 @@ try {
 
             http_response_code(200);
             echo json_encode(['acteur' => $acteur]);
-          break;
+            break;
           case "get_acteurs":
             // Check authenticated user
             checkAuth($pdo);
@@ -274,7 +379,7 @@ try {
 
             http_response_code(200);
             echo json_encode(['acteurs' => $acteurs]);
-          break;
+            break;
           case "get_current_user":
             // Check authenticated user
             checkAuth($pdo);
@@ -286,7 +391,7 @@ try {
 
             http_response_code(200);
             echo json_encode(["success" => true, "message" => "Bienvenue dans votre espace!", "user" => $user]);
-          break;
+            break;
           case "signout_user":
             // Check authenticated user
             checkAuth($pdo);
@@ -305,11 +410,11 @@ try {
 
             http_response_code(200);
             echo json_encode([ "success" => true, "message" => "Vous vous êtes bien déconnecté!"]);
-          break;
+            break;
           default: throw new Exception("Route not found");
         }
-      break;
-      default: throw new Exception("Method not allowed");
+        break;
+        default: throw new Exception("Method not allowed");
     }
   } else {
     // throw new Exception("Benvenue à API de GBAF");
