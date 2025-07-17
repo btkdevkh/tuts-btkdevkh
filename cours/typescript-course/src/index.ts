@@ -1,3 +1,5 @@
+import { Person } from "./types/types.js";
+
 /**
  * BASIC
  *
@@ -18,6 +20,11 @@
  * void
  * never
  * ? (optional)
+ *
+ * enum
+ * ?? (coalesing)
+ * ! (un élement est non null)
+ * as (tpe assertion)
  */
 
 const firstname: string = "Bella";
@@ -51,7 +58,6 @@ varAny = true;
 let unknownVar: unknown;
 unknownVar = "abc";
 unknownVar = 1000;
-console.log(unknownVar);
 let testVar: boolean;
 if (typeof unknownVar === "boolean") {
   testVar = unknownVar;
@@ -60,14 +66,9 @@ if (typeof unknownVar === "boolean") {
 // Custom types
 type CustomVar = string | number | boolean;
 
-type Person = {
-  username: string;
-  age: number;
-  sexe: boolean;
-};
-
 // Interface (object & class POO)
 interface Person2 {
+  id?: null | string;
   username: string;
   age: number;
   sexe: boolean;
@@ -101,3 +102,24 @@ interface Person2 {
 // const throwException = (msg: string): never => {
 //   throw new Error(msg);
 // };
+
+// Enum (énumération)
+enum Colors {
+  BLACK = "#000",
+  WHITE = "#fff",
+  RED = "#ff0000",
+  BLUE = "#0000FF",
+}
+
+// ?? (coalesing)
+let user2: string | null | undefined = "Jimmy";
+let connectedUser = user2 ?? "Anonyme";
+
+// ! (indiquer un élément ne peut pas être null)
+if (person?.id) {
+  console.log(person.id);
+}
+console.log(person.username);
+
+// as
+const inputEl = document.querySelector("#text")! as HTMLInputElement;
