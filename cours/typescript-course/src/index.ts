@@ -119,7 +119,68 @@ let connectedUser = user2 ?? "Anonyme";
 if (person?.id) {
   console.log(person.id);
 }
-console.log(person.username);
 
 // as
 const inputEl = document.querySelector("#text")! as HTMLInputElement;
+
+/**
+ * Generic (<>)
+ *
+ * generic Array
+ * generic with function
+ * generic with type (alias)
+ * generic with interface
+ */
+
+// generic Array
+const array4 = ["abc", 1000, null, undefined];
+const array5: Array<string | number | null | undefined> = [
+  "abc",
+  1000,
+  null,
+  undefined,
+];
+const array6: Array<string> = ["dsds", "sdsdsd", "dsdsds"];
+const array7: Array<number> = [1, 2, 3, 4];
+const people: Array<Person> = [person];
+
+// without generic function
+function logger1(params: string | number | boolean): string | number | boolean {
+  return params;
+}
+const a = logger1("Je suis une fonction non générique");
+
+// type guard
+if (typeof a === "string") {
+  console.log(a.toUpperCase());
+}
+
+// with generic function
+function logger2<T>(params: T): T {
+  return params;
+}
+
+const b = logger2<string>("Je suis une fonction générique");
+const c = logger2<number>(35);
+const d = logger2<boolean>(true);
+const e = logger2<Person>(person);
+
+// generic with type (alias)
+type BasicType<T> = T;
+
+const f: BasicType<string> = "dklsjslflsls";
+const g: BasicType<Person> = person;
+
+// generic with interface
+interface ILogger<T> {
+  log: T;
+}
+
+function logger3<T>(params: T): T {
+  return params;
+}
+
+const j = logger3<ILogger<string>>({ log: "500, server error!" });
+const k = logger3<ILogger<number>>({ log: 500 });
+console.log(j);
+console.log(k);
