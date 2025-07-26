@@ -1,4 +1,6 @@
-import { Person } from "./types/types.js";
+import { Person as PersonType } from "./types/types.js";
+import Person, { Lead } from "./oop/Person.js";
+import Admin from "./oop/Admin.js";
 
 /**
  * BASIC
@@ -43,7 +45,7 @@ const array2: number[] = Array(1, 2, 3);
 const array3: [string, number, boolean] = ["Jim", 35, true];
 
 // Object
-const person: Person = {
+const person: PersonType = {
   username: "JK007",
   age: 35,
   sexe: true,
@@ -142,18 +144,18 @@ const array5: Array<string | number | null | undefined> = [
 ];
 const array6: Array<string> = ["dsds", "sdsdsd", "dsdsds"];
 const array7: Array<number> = [1, 2, 3, 4];
-const people: Array<Person> = [person];
+const people: Array<PersonType> = [person];
 
 // without generic function
 function logger1(params: string | number | boolean): string | number | boolean {
   return params;
 }
-const a = logger1("Je suis une fonction non générique");
+// const a = logger1("Je suis une fonction non générique");
 
 // type guard
-if (typeof a === "string") {
-  console.log(a.toUpperCase());
-}
+// if (typeof a === "string") {
+//   console.log(a.toUpperCase());
+// }
 
 // with generic function
 function logger2<T>(params: T): T {
@@ -161,15 +163,15 @@ function logger2<T>(params: T): T {
 }
 
 const b = logger2<string>("Je suis une fonction générique");
-const c = logger2<number>(35);
-const d = logger2<boolean>(true);
-const e = logger2<Person>(person);
+// const c = logger2<number>(35);
+// const d = logger2<boolean>(true);
+// const e = logger2<Person>(person);
 
 // generic with type (alias)
 type BasicType<T> = T;
 
 const f: BasicType<string> = "dklsjslflsls";
-const g: BasicType<Person> = person;
+const g: BasicType<PersonType> = person;
 
 // generic with interface
 interface ILogger<T> {
@@ -182,5 +184,54 @@ function logger3<T>(params: T): T {
 
 const j = logger3<ILogger<string>>({ log: "500, server error!" });
 const k = logger3<ILogger<number>>({ log: 500 });
-console.log(j);
-console.log(k);
+// console.log(j);
+// console.log(k);
+
+/**
+ * OOP
+ *
+ * Properties
+ * Methods
+ * Getters
+ * Setters
+ * Accessibilities (public, private, protected)
+ * static
+ * inheritance
+ * interface
+ * abstract
+ */
+const person1 = new Person(
+  "mike91",
+  "Mike",
+  "NM",
+  "mike91@gmail.com",
+  true,
+  "NH123456"
+);
+const person2 = new Person(
+  "jim75",
+  "Jim",
+  "KO",
+  "jim75@gmail.com",
+  true,
+  "KM456789"
+);
+const person3 = new Admin(
+  "admin91",
+  "Bella",
+  "KM",
+  "admin91@gmail.com",
+  false,
+  "FG45655566"
+);
+// console.log("person1", person1);
+// console.log("person2", person2);
+// person2.greet();
+
+// person1.userName = "bella91";
+// console.log(person1.userName);
+
+// person1.greet();
+person2.greet();
+console.log("--------------------");
+person3.greet();
