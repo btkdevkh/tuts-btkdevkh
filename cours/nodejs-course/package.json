@@ -1,12 +1,16 @@
 {
   "name": "nodejs-course",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js",
+    "dev": "node --env-file=.env index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "date-fns": "^4.1.0"
+  }
 }
