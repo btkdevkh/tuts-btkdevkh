@@ -1,0 +1,19 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "brand": "Samsung",
+      "model": "TV 4K"
+    },
+    {
+      "id": 2,
+      "brand": "OnePlus",
+      "model": "OnePlus Nord"
+    },
+    {
+      "id": 4,
+      "brand": "Martin Guitar",
+      "model": "Guitar KH40"
+    }
+  ]
+}
