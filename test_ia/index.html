@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mon Restaurant</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="navbar__brand">Mon Restaurant</div>
+        <button class="navbar__toggle" id="menu-toggle">&#9776;</button>
+        <div class="navbar__menu" id="menu">
+          <ul class="navbar__list">
+            <li class="navbar__item">
+              <a href="#home" class="navbar__link navbar__link--active"
+                >Accueil</a
+              >
+            </li>
+            <li class="navbar__item">
+              <a href="#menu-section" class="navbar__link">Menu</a>
+            </li>
+            <li class="navbar__item">
+              <a href="#contact" class="navbar__link">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home">
+        <h1>Bienvenue à Mon Restaurant</h1>
+        <p>La meilleure cuisine de la ville.</p>
+      </section>
+      <section id="menu-section">
+        <h2>Notre Menu</h2>
+        <div class="menu-list">
+          <div class="menu-card">
+            <h3 class="menu-card__title">Plat 1</h3>
+            <p class="menu-card__description">Description du plat 1</p>
+          </div>
+          <div class="menu-card">
+            <h3 class="menu-card__title">Plat 2</h3>
+            <p class="menu-card__description">Description du plat 2</p>
+          </div>
+          <div class="menu-card">
+            <h3 class="menu-card__title">Plat 3</h3>
+            <p class="menu-card__description">Description du plat 3</p>
+          </div>
+        </div>
+      </section>
+      <section id="contact">
+        <h2>Contactez-nous</h2>
+        <p>Adresse: 123 Rue du Restaurant, Paris</p>
+        <p>Téléphone: 01 23 45 67 89</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Mon Restaurant. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+      const menuToggle = document.getElementById("menu-toggle");
+      const menu = document.getElementById("menu");
+
+      menuToggle.addEventListener("click", () => {
+        menu.classList.toggle("navbar__menu--active");
+      });
+
+      const menuLinks = document.querySelectorAll(".navbar__link");
+
+      menuLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          menuLinks.forEach((otherLink) =>
+            otherLink.classList.remove("navbar__link--active")
+          );
+          link.classList.add("navbar__link--active");
+          // Close menu on mobile after click
+          if (menu.classList.contains("navbar__menu--active")) {
+            menu.classList.remove("navbar__menu--active");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

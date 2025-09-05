@@ -1,0 +1,218 @@
+html {
+  scroll-behavior: smooth;
+}
+
+/* General Body Styles */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header and Navbar */
+header {
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.navbar__brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__link {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  text-decoration: none;
+  color: inherit; /* Hérite la couleur du parent */
+}
+
+.navbar__link--active {
+  text-decoration: underline;
+}
+
+/* Style pour le bouton du menu hamburger */
+.navbar__toggle {
+  display: none; /* Caché par défaut sur les grands écrans */
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Main Content */
+main {
+  padding: 0;
+}
+
+/* Hero Section */
+#home {
+  background: url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1974&auto=format&fit=crop")
+    no-repeat center center/cover;
+  color: white;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+#home h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Sections */
+section {
+  padding: 4rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+/* Underline effect for section titles */
+section h2::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: #c0392b;
+}
+
+/* Menu Section */
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  text-align: left;
+}
+
+.menu-item {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.menu-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.menu-item h3 {
+  font-size: 1.5rem;
+  color: #c0392b;
+  margin-top: 0;
+}
+
+/* Contact Section */
+#contact p {
+  font-size: 1.1rem;
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 2rem; /* remove position fixed */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar__menu {
+    display: none; /* Cache le menu par défaut sur mobile */
+    position: absolute;
+    top: 50px; /* Ajustez si nécessaire */
+    left: 0;
+    width: 100%;
+    background-color: #f8f8f8; /* Un fond pour le menu déroulant */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Affiche le menu quand la classe active est présente */
+  .navbar__menu--active {
+    display: block;
+  }
+
+  .navbar__list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar__item {
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar__toggle {
+    display: block; /* Affiche le bouton sur mobile */
+  }
+
+  #home h1 {
+    font-size: 2.5rem;
+  }
+}
+
+.menu ul li {
+  margin: 0;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.menu ul li a {
+  padding: 1rem;
+  display: block;
+  width: 100%;
+  border-radius: 0;
+  color: #333;
+}
+
+.menu ul li a:hover,
+.menu ul li a.active {
+  background-color: #c0392b;
+  color: #fff;
+}
+
+.menu-toggle {
+  display: block; /* Show on mobile */
+}
+
+#home h1 {
+  font-size: 2.5rem;
+}
