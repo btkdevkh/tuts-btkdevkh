@@ -9,11 +9,11 @@
 
 #5 L'aproache du WebApp classique et HTML Template
 #6 L'aproache d'API Rest et données en JSON
-#7 Middlewares
 #8 Gestion des erreurs
+#7 Middlewares
 
 #9 Organisation des dossiers
 #10 Controllers
 #11 Routes
-#12 Intéraction avec le frontend
+#12 Mini Exemple d'Intéraction avec le Frontend
 #13 Cors Origin
