@@ -6,6 +6,7 @@
 }
 
 body {
+  min-width: 420px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -62,7 +63,7 @@ nav ul li {
 /* Container */
 .container {
   min-height: 100vh;
-  max-width: 1200px;
+  max-width: 1014px;
   margin: 1rem auto;
   padding: 0 1rem;
 }
@@ -80,7 +81,7 @@ aside {
   border-radius: 1rem;
 
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -110,4 +111,23 @@ footer {
   padding: 1rem;
   text-align: center;
   font-size: 1.2rem;
+}
+
+/* Media Queries */
+@media screen and (min-width: 737px) {
+  nav ul {
+    flex-direction: row;
+  }
+  nav ul li {
+    width: 150px;
+  }
+
+  /* Hero */
+  #hero-container {
+    height: 400px;
+  }
+  .hero img {
+    height: 100%;
+    object-fit: cover;
+  }
 }
