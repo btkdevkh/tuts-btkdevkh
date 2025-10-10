@@ -7,12 +7,17 @@
       content="Un foodtruck basé en France, spécialisé dans la cuisine traditionelle Breton"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Accueil | BTK Food Track</title>
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Accueil | FoodTrack</title>
   </head>
   <body>
     <!-- Header -->
     <header>
-      <h1>BTK Food Truck</h1>
+      <div class="main-title-container">
+        <img class="logo" src="./img/logo.png" alt="logo" />
+        <h1>FoodTruck</h1>
+      </div>
 
       <nav>
         <ul>
@@ -26,29 +31,37 @@
     </header>
 
     <!-- Hero -->
-    <main>
-      <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni in a
-        eaque reprehenderit eum enim error eos quo laboriosam? Vitae voluptas
-        fugit aspernatur repudiandae temporibus voluptates corrupti ratione eos
-        nemo?
-      </p>
-      <img src="./img/hero.jpg" alt="poster des plats" width="100%" />
-    </main>
+    <div class="container">
+      <main class="hero">
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni in a
+          eaque reprehenderit eum enim error eos quo laboriosam? Vitae voluptas
+          fugit aspernatur repudiandae temporibus voluptates corrupti ratione
+          eos nemo?
+        </p>
 
-    <!-- Newsletter -->
-    <aside>
-      <form action="">
+        <br />
+        <hr />
+        <br />
+
+        <img src="./img/hero.jpg" alt="poster des plats" />
+      </main>
+
+      <br />
+
+      <!-- Newsletter -->
+      <aside>
         <h2>Newsletter</h2>
-        <label for="email">Email :</label>
-        <input type="email" name="email" id="email" />
-        <input type="submit" value="Envoyer" />
-      </form>
-    </aside>
+        <form action="">
+          <input type="email" name="email" id="email" placeholder="Email" />
+          <input type="submit" value="Envoyer" />
+        </form>
+      </aside>
+    </div>
 
     <!-- Footer -->
     <footer>
-      <div>&copy;2025 | BTK Food Truck</div>
+      <div>&copy;2025 | FoodTruck</div>
     </footer>
   </body>
 </html>
