@@ -1,78 +1,70 @@
 /**
- * 01. Les bases du langage
- * - Les variables : var, let, const
- * - Les types de données : string, number, boolean, null, undefined, object
- * - La concaténation et interpolation : Bonjour ${nom}
- * - Les opérateurs (arithmétiques, comparaison, logiques)
+ * 02. Contrôle du flux (conditions et boucles)
+ * - if, else if, else
+ * - switch
+ * - Boucles : for, while, do...while
+ * - break et continue
  */
 
-var prenom; // undefinded
-// console.log(prenom);
+let sunny = false;
+let day = "mercredi";
+day = "jeudi";
+let number = 1;
 
-prenom = null; // null
-// console.log(prenom);
+if (sunny === true) {
+  console.log("Je vais sortir et courir!");
+} else {
+  console.log("Je ne vais pas sortir, il fait froid dehors!");
+}
 
-prenom = "Bella"; // string
-let age = 6; // number
-let num = 12.5; // number
-const sexe = true; // boolean
-age = 7;
+switch (day) {
+  case "mercredi":
+    console.log("Je bosse!");
+    break;
+  case "jeudi":
+    console.log("Je bosse aussi!");
+    break;
+  default:
+    console.log("C'est le week-end!");
+}
 
-const personne = {
-  firstname: prenom,
-}; // object
-personne.firstname = "Mike";
+switch (number) {
+  case 1:
+    console.log(`Ici number par cas: ${number}`);
+    break;
+  default:
+    console.log(`Ici number par default: ${number}`);
+}
 
-// console.log(sexe);
-// console.log(age);
-// console.log(num);
-// console.log(prenom);
+console.log("-----------------------------------------");
 
-// console.log("Bonjour, je m'appelle " + prenom);
-// console.log(`Bonjour, je m'appelle ${personne.firstname}`);
+for (let i = 0; i < 5; i++) {
+  if (i > 3) {
+    break;
+  }
 
-// Les opérateurs arithmétiques : -, +, *, /, %
-const a = 3;
-const b = 3;
+  console.log(`i dans la boucle for: ${i}`);
+}
 
-let resultat = a + b;
-resultat = b - a;
-resultat = a * b;
-resultat = b / 2;
-resultat = a % 2;
+console.log("-----------------------------------------");
 
-// Les opérateurs comparaison : <, >, <=, >=, ==, ===
-resultat = a < b;
-resultat = a > b;
-resultat = a <= b;
-resultat = a >= b;
-resultat = a === b;
+let i = 0;
+while (i < 5) {
+  i++;
 
-// Les opérateurs logiques: &&, ||, !
-resultat = a && b > 3;
-resultat = a === 3 || b === 3; // (Positive)
-resultat = a !== b; // (Negative)
-resultat = !sexe;
-// console.log(resultat);
+  if (i > 3) {
+    console.log(`i dans la boucle while de continue: ${i}`);
+    continue;
+  }
 
-// Opérateur logique (&&)
-// true && true = true
-// false && false = fasle
-// true && false = false
-// false && true = false
+  console.log(`i dans la boucle while: ${i}`);
+}
 
-// console.log(true && true);
-// console.log(false && false);
-// console.log(true && false);
-// console.log(false && true);
+console.log("-----------------------------------------");
 
-// Opérateur logique (||)
-// true || true = true
-// false || false = false
-// true || false = true
-// false || true = true
-
-// console.log(true || true);
-// console.log(false || false);
-// console.log(true || false);
-// console.log(false || true);
+let k = 6;
+do {
+  console.log("Code exécuté malgré la condition est fausse.");
+  // console.log(`k dans la boucle do while: ${k}`);
+  k++;
+} while (k < 5);
