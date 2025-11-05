@@ -1,70 +1,58 @@
 /**
- * 02. Contrôle du flux (conditions et boucles)
- * - if, else if, else
- * - switch
- * - Boucles : for, while, do...while
- * - break et continue
+ * 03. Fonctions
+ * - Déclaration et exécution d’une fonction
+ * - Paramètres et retour de valeur
+ * - Fonctions fléchées (()=>{})
+ * - IIFE
+ * - Portée des variables (scope)
  */
 
-let sunny = false;
-let day = "mercredi";
-day = "jeudi";
-let number = 1;
-
-if (sunny === true) {
-  console.log("Je vais sortir et courir!");
-} else {
-  console.log("Je ne vais pas sortir, il fait froid dehors!");
+// Function Declaration (clissic)
+function greet(name = "Bunthoeun") {
+  console.log(`Bonjour, je m'appelle ${name}`);
 }
 
-switch (day) {
-  case "mercredi":
-    console.log("Je bosse!");
-    break;
-  case "jeudi":
-    console.log("Je bosse aussi!");
-    break;
-  default:
-    console.log("C'est le week-end!");
+// Function Expression (anonyme)
+const greet2 = function () {
+  console.log("Je suis une expression fonction.");
+};
+
+// Arrow Function (anonyme)
+const greet3 = () => {
+  console.log("Je suis une fonction fléchée.");
+};
+
+// IIFE (Immediately Invoked Function Expression)
+// (function () {
+//   console.log("Je suis une IIFE manière expression.");
+// })();
+
+// (() => {
+//   console.log("Je suis une IIFE manière fléchéé.");
+// })();
+
+// Valeur de retour
+const add = (number) => 2 + number;
+const result = add(20);
+
+// Scope GLOBAL (Parents)
+const globalvar = 2;
+
+function multiply(number) {
+  var fullname = "Gile FK";
+  // Scope LOCAL (Enfant)
+  const localVar = number;
+  console.log(fullname);
+
+  return 2 * localVar;
 }
 
-switch (number) {
-  case 1:
-    console.log(`Ici number par cas: ${number}`);
-    break;
-  default:
-    console.log(`Ici number par default: ${number}`);
+if (globalvar === 2) {
+  var x = 10;
+  let y = 5;
 }
 
-console.log("-----------------------------------------");
+console.log(multiply(globalvar));
 
-for (let i = 0; i < 5; i++) {
-  if (i > 3) {
-    break;
-  }
-
-  console.log(`i dans la boucle for: ${i}`);
-}
-
-console.log("-----------------------------------------");
-
-let i = 0;
-while (i < 5) {
-  i++;
-
-  if (i > 3) {
-    console.log(`i dans la boucle while de continue: ${i}`);
-    continue;
-  }
-
-  console.log(`i dans la boucle while: ${i}`);
-}
-
-console.log("-----------------------------------------");
-
-let k = 6;
-do {
-  console.log("Code exécuté malgré la condition est fausse.");
-  // console.log(`k dans la boucle do while: ${k}`);
-  k++;
-} while (k < 5);
+// var : il respect le cope de fonction
+// let, const : ils respectent le scope de block

@@ -17,6 +17,7 @@
 - Déclaration et exécution d’une fonction
 - Paramètres et retour de valeur
 - Fonctions fléchées (()=>{})
+- IFFE
 - Portée des variables (scope)
 
 # 04. Tableaux et objets
