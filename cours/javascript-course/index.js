@@ -1,58 +1,38 @@
 /**
- * 03. Fonctions
- * - Déclaration et exécution d’une fonction
- * - Paramètres et retour de valeur
- * - Fonctions fléchées (()=>{})
- * - IIFE
- * - Portée des variables (scope)
+ * 04. Tableaux et objets
+ * - Créer et manipuler un tableau : push, pop, map, filter, forEach
+ * - Créer un objet : propriétés et méthodes
+ * - Parcourir un objet (boucle for...in)
+ * - Notion d’accès par “dot” ou “bracket”
  */
 
-// Function Declaration (clissic)
-function greet(name = "Bunthoeun") {
-  console.log(`Bonjour, je m'appelle ${name}`);
-}
+// Array
+const numbers = [1, 55, 66, 33, 100, 99];
+const people = Array("Jimmy", "Bella", "Gile", "Mike");
 
-// Function Expression (anonyme)
-const greet2 = function () {
-  console.log("Je suis une expression fonction.");
+numbers.push(35);
+numbers.pop();
+
+const newNumbers = numbers.map((number) => number + 1);
+const filteredNumbers = numbers.filter((number) => number < 60);
+
+numbers.forEach((number) => {
+  // console.log("number", number);
+});
+
+// Object
+const person = {
+  name: "Bella",
+  age: 5,
+  email: "bella@gmail.com",
+  greet() {
+    console.log(`Salut, je m'appelle ${this.name}`);
+  },
 };
 
-// Arrow Function (anonyme)
-const greet3 = () => {
-  console.log("Je suis une fonction fléchée.");
-};
+// console.log(person.age); // (dot)
+// console.log(person["name"]); // []
 
-// IIFE (Immediately Invoked Function Expression)
-// (function () {
-//   console.log("Je suis une IIFE manière expression.");
-// })();
-
-// (() => {
-//   console.log("Je suis une IIFE manière fléchéé.");
-// })();
-
-// Valeur de retour
-const add = (number) => 2 + number;
-const result = add(20);
-
-// Scope GLOBAL (Parents)
-const globalvar = 2;
-
-function multiply(number) {
-  var fullname = "Gile FK";
-  // Scope LOCAL (Enfant)
-  const localVar = number;
-  console.log(fullname);
-
-  return 2 * localVar;
+for (let property in person) {
+  console.log(`${property}:`, person[property]);
 }
-
-if (globalvar === 2) {
-  var x = 10;
-  let y = 5;
-}
-
-console.log(multiply(globalvar));
-
-// var : il respect le cope de fonction
-// let, const : ils respectent le scope de block
