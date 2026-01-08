@@ -1,0 +1,90 @@
+body {
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  height: 70px;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  text-align: right;
+  background-color: #333;
+}
+.output {
+  height: 70px;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  text-align: right;
+  background-color: wheat;
+}
+
+.calculator {
+  width: 320px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.numbers span {
+  flex-grow: 1;
+  width: 80px;
+  color: #000;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  border: 1px solid #000;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.operators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.operators span {
+  width: 80px;
+  color: #000;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  border: 1px solid #000;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result {
+  display: flex;
+  justify-content: space-between;
+}
+.result span {
+  width: 100%;
+  color: #000;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  border: 1px solid #000;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+span {
+  transition: 0.2s ease-in;
+}
+span:hover {
+  color: #000;
+  background-color: #fff;
+}

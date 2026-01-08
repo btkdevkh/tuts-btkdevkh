@@ -1,0 +1,7 @@
+{
+  "user": "James",
+  "shoppingList": [
+    { "id": 1, "product": "iPhone 18 Pro" },
+    { "id": 2, "product": "Samsung TV 8K 85'" }
+  ]
+}

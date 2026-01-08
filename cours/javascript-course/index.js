@@ -1,87 +1,36 @@
 /**
- * 07. Introduction à l’Asynchrone
- * - Notion de “synchrone” vs “asynchrone”
- * - Les promesses (Promise, .then, .catch)
- * - async et await
- * - Exemple : récupérer des données avec fetch()
+ * 08. JSON et stockage local (FIN)
+ * - Qu’est-ce que JSON
+ * - localStorage et sessionStorage
+ * - Exemple : sauvegarder des préférences utilisateur
  */
 
-// synchrone
-// console.log("tâche 1");
+// JSON (JavaScript Object Notation)
+fetch("./data.json")
+  .then((res) => res.json())
+  .then((data) => {
+    localStorage.setItem("data", JSON.stringify(data));
+  })
+  .catch((err) => console.log(err));
 
-// let result = 0;
-// for (let i = 0; i < 1000000000; i++) {
-//   result += i;
-// }
-// console.log("tâche 2", result);
+// localStorage (donée persitante non sensible)
+localStorage.setItem("theme", "light");
+const theme = localStorage.getItem("theme");
+const data = JSON.parse(localStorage.getItem("data"));
+console.log(theme);
+// console.log(data);
+// localStorage.clear();
 
-// console.log("tâche 3");
+// sessionStorage (donnée temporaire non sensible)
+sessionStorage.setItem("email", "james@example.com");
+const email = sessionStorage.getItem("email");
+sessionStorage.setItem("data", JSON.stringify(data));
+// console.log(email);
+// sessionStorage.clear();
 
-// asynchrone
-// console.log("tâche 1");
+// Example
+theme && theme === "dark"
+  ? (document.body.style.backgroundColor = "#333")
+  : "#fff";
 
-// setTimeout(() => {
-//   let result = 0;
-//   for (let i = 0; i < 1000000000; i++) {
-//     result += i;
-//   }
-//   console.log("tâche 2", result);
-// }, 0);
-
-// console.log("tâche 3");
-
-// Les promesses (Promise, .then, .catch)
-// function goToCinema(go) {
-//   return new Promise((resolve, reject) => {
-//     if (go) {
-//       return resolve("On y va!");
-//     }
-
-//     return reject("Oh, j'ai la flemme!");
-//   });
-// }
-
-// goToCinema(true)
-//   .then((res) => {
-//     console.log(res);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-console.log("task 1");
-
-// DOM
-const jokeQEl = document.getElementById("joke-q");
-const jokeAEl = document.getElementById("joke-a");
-
-// Exemple : récupérer des données avec fetch()
-const API_URL = "https://v2.jokeapi.dev/joke/any?lang=FR";
-
-const fetchData = async () => {
-  console.log("task 2");
-
-  const response = await fetch(API_URL);
-
-  if (!response.ok) {
-    throw new Error("Error fetching data");
-  }
-
-  const data = await response.json();
-  return data;
-};
-
-// async et await
-async function main() {
-  try {
-    const data = await fetchData();
-    jokeQEl.textContent = data.setup;
-    jokeAEl.textContent = data.delivery;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-console.log("task 3");
-
-main();
+// Enjoy !
